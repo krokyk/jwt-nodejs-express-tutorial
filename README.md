@@ -52,3 +52,17 @@ The last step contains the fully working example which we will slowly get to in 
 npm init -y
 ```
 Notice that `package.json` was created with some default values derived from our current content.
+
+## 02 - Install required libraries
+
+```
+npm install express jsonwebtoken dotenv
+```
+* `express` for our server code and API endpoints
+* `jsonwebtoken` for working with _JWT_
+* `dotenv` to store our sensitive and configuration stuff inside the `.env` file (like secrets or ports)
+
+Install the development dependency `nodemon` which will automatically restart our server as we make changes to the code:
+```
+npm install --save-dev nodemon
+```
