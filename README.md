@@ -36,15 +36,19 @@ code jwt-nodejs-express-tutorial/
 ```
 You can close _WSL_ prompt now. We will be working exclusively in _VSCode_ from now on.
 
-# Setting up the Project
+>**:bulb: TIP:** You can also just [download the ZIP](https://github.com/krokyk/jwt-nodejs-express-tutorial/archive/refs/heads/main.zip) archive of this project from github and unzip it inside `vscode` dir.
 
-Initialize our project:
+# Directory `project-evolution`
+
+This dir holds all the files arranged into subdirs as they are created/changed.
+These subdirs are numbered and each number represents a certain state of the content.
+Their content matches the content you should have in your project root dir if you follow the tutorial.
+The subchapters here are numbered the same way, so after you finish one subchapter, your files should have the same content as those you find under `project-evolution` subdir with the same number.
+The last step contains the fully working example which we will slowly get to in the end.
+
+## 01 - Initialize the project
 
 ```
 npm init -y
 ```
-
-Install the libraries our project will use:
-```
-npm install express jsonwebtoken dotenv
-```
+Notice that `package.json` was created with some default values derived from our current content.
