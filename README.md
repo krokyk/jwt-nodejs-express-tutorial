@@ -24,36 +24,39 @@ There are several ways to open the _WSL_ prompt, one is to hit <kbd>WIN</kbd>+<k
 
 ![WSL Prompt](images/wsl-prompt.png)
 
-Next, you're going to create a `vscode` dir in your user home directory, clone this repository into it and launch _VSCode_ in that dir. In _WSL_ prompt, type:
+Next, you're going to create a `vscode` dir in your user home directory and clone this repository into it. In _WSL_ prompt, type:
 ```
 cd ~ && mkdir vscode && cd vscode/
 ```
 ```
 git clone git@github.com:krokyk/jwt-nodejs-express-tutorial.git
 ```
+>**:bulb: TIP:** You can also just [download the ZIP](https://github.com/krokyk/jwt-nodejs-express-tutorial/archive/refs/heads/main.zip) archive of this project from github and unzip it into the `vscode` dir (rename the folder if necessary).
+
+Now, launch _VSCode_ in the newly created dir
 ```
 code jwt-nodejs-express-tutorial/
 ```
 You can close _WSL_ prompt now. We will be working exclusively in _VSCode_ from now on.
 
->**:bulb: TIP:** You can also just [download the ZIP](https://github.com/krokyk/jwt-nodejs-express-tutorial/archive/refs/heads/main.zip) archive of this project from github and unzip it inside `vscode` dir.
+Inspect the contents of the project.
+You can ignore the `images` dir (it contains images for this readme) but take a look into the one called `project-evolution`.
 
-# Directory `project-evolution`
-
-This dir holds all the files arranged into subdirs as they are created/changed.
-These subdirs are numbered and each number represents a certain state of the content.
-Their content matches the content you should have in your project root dir if you follow the tutorial.
+This dir holds files arranged into subdirs which reflect their "evolution" as they are created/changed.
+These subdirs are numbered and each number represents a certain state of the project content.
+The content matches the content you should have in your project root dir if you follow the tutorial.
 The subchapters here are numbered the same way, so after you finish one subchapter, your files should have the same content as those you find under `project-evolution` subdir with the same number.
-The last step contains the fully working example which we will slowly get to in the end.
 
-## 01 - Initialize the Project
+>**:bulb: TIP:** It's best to compare the contents of the project dir with each of the subdirs in `project-evolution` dir as you go through the tutorial chapters. You can use any tool that is able to compare the directory contents and easily display changed files and then compare those files to see what the change from that chapter is. My tool of choice for that is [Beyond Compare](https://www.scootersoftware.com/)
+
+# 01 - Initialize the Project
 
 ```
 npm init -y
 ```
 Notice that `package.json` was created with some default values derived from our current content.
 
-## 02 - Install Required Libraries
+# 02 - Install Required Libraries
 
 ```
 npm install express jsonwebtoken dotenv
@@ -67,7 +70,7 @@ Install the development dependency `nodemon` which will automatically restart ou
 npm install --save-dev nodemon
 ```
 
-## 03 - Create Project Files
+# 03 - Create Project Files
 
 ```
 touch server.js && touch .env
