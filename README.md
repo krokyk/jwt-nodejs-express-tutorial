@@ -66,3 +66,21 @@ Install the development dependency `nodemon` which will automatically restart ou
 ```
 npm install --save-dev nodemon
 ```
+
+## 03 - Create Project Files
+
+```
+touch server.js && touch .env
+```
+* `server.js` will contain our server code
+* `.env` will contain our configuration
+
+Inside the `package.json` we will hook the `nodemon` to run our newly created `server.js`. You can now try to run the `server.js` with `nodemon`:
+
+```
+npm run devStart
+```
+![Nodemon starts](images/03-01.png)
+
+Now, without quitting the server, try adding `console.log("Hi!")` to the `server.json` and you should see the output in the consolo immediately after you save the file, because `nodemon` is monitoring it.
+![Nodemon refreshes the server](images/03-02.png)
