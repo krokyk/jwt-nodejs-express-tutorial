@@ -46,14 +46,14 @@ Their content matches the content you should have in your project root dir if yo
 The subchapters here are numbered the same way, so after you finish one subchapter, your files should have the same content as those you find under `project-evolution` subdir with the same number.
 The last step contains the fully working example which we will slowly get to in the end.
 
-## 01 - Initialize the project
+## 01 - Initialize the Project
 
 ```
 npm init -y
 ```
 Notice that `package.json` was created with some default values derived from our current content.
 
-## 02 - Install required libraries
+## 02 - Install Required Libraries
 
 ```
 npm install express jsonwebtoken dotenv
