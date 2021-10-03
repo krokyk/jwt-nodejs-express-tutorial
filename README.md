@@ -20,17 +20,18 @@ Simple example on how to work with _JWT_ using _Node.js_ and _Express.js_ with _
 * I like Bash shell more than Windows PowerShell or Cmd 
 
 ## Setting up the Workspace
-There are several ways to open the _WSL_ prompt, one is to hit <kbd>Win</kbd>+<kbd>R</kbd> and typing `wsl` into the text box. A _WSL_ prompt should open like this:
+There are several ways to open the _WSL_ prompt, one is to hit <kbd>WIN</kbd>+<kbd>R</kbd> to open the _Run_ dialog and typing `wsl` into the text box followed by <kbd>ENTER</kbd>. A _WSL_ prompt should open like this:
 
 ![WSL Prompt](images/wsl-prompt.png)
 
 Next, you're going to create a `vscode` dir in your user home directory, clone this repository into it and launch _VSCode_ in that dir. In _WSL_ prompt, type:
-```console
-~ $ cd ~ && mkdir vscode && cd vscode/
 ```
-```console
-~/vscode $ git clone git@github.com:krokyk/jwt-nodejs-express-tutorial.git
+cd ~ && mkdir vscode && cd vscode/
 ```
-```console
-~/vscode $ code jwt-nodejs-express-tutorial/
 ```
+git clone git@github.com:krokyk/jwt-nodejs-express-tutorial.git
+```
+```
+code jwt-nodejs-express-tutorial/
+```
+You can close _WSL_ prompt now. We will be working exclusively in _VSCode_ from now on.
