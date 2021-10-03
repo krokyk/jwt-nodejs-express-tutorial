@@ -1,0 +1,25 @@
+{
+  "name": "jwt-nodejs-express-tutorial",
+  "version": "1.0.0",
+  "description": "<p align=\"center\">   <img src=\"images/logo.png\" height=\"100\" />   <h1 align=\"center\">JWT + Node.js + Express Tutorial</h1> </p>",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/krokyk/jwt-nodejs-express-tutorial.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/krokyk/jwt-nodejs-express-tutorial/issues"
+  },
+  "homepage": "https://github.com/krokyk/jwt-nodejs-express-tutorial#readme",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1"
+  }
+}

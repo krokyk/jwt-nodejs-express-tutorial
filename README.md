@@ -12,14 +12,14 @@ Simple example on how to work with _JWT_ using _Node.js_ and _Express.js_ with _
     * VSCode extension [Remote - WSL](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-wsl)
     * VSCode extension [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) - you can use any other REST client you are comfortable with, e.g. [Postman](https://www.postman.com/).
     We will use it to test the calls to the API endpoints we're going to create
-* [nvm, node.js and npm](https://docs.microsoft.com/en-us/windows/dev-environment/javascript/nodejs-on-wsl#install-nvm-nodejs-and-npm) on _WSL_ (the instructions are perfectly OK for _WSL 1_, too)
+* [nvm, node.js and npm](https://docs.microsoft.com/en-us/windows/dev-environment/javascript/nodejs-on-wsl#install-nvm-nodejs-and-npm) on _WSL_ (the instructions are perfectly OK for _WSL 1_, too) - install the recommended LTS version of the node.js
 
 >**Note**: Actually you don't need to use _VSCode_ or _WSL_, it's up to you. I chose this combination because:
 * VSCode is a great IDE and works very well with Node.js
 * It has a very powerful integrated terminal 
 * I like Bash shell more than Windows PowerShell or Cmd 
 
-## Setting up the Workspace
+# Setting up the Workspace
 There are several ways to open the _WSL_ prompt, one is to hit <kbd>WIN</kbd>+<kbd>R</kbd> to open the _Run_ dialog and typing `wsl` into the text box followed by <kbd>ENTER</kbd>. A _WSL_ prompt should open like this:
 
 ![WSL Prompt](images/wsl-prompt.png)
@@ -35,3 +35,16 @@ git clone git@github.com:krokyk/jwt-nodejs-express-tutorial.git
 code jwt-nodejs-express-tutorial/
 ```
 You can close _WSL_ prompt now. We will be working exclusively in _VSCode_ from now on.
+
+# Setting up the Project
+
+Initialize our project:
+
+```
+npm init -y
+```
+
+Install the libraries our project will use:
+```
+npm install express jsonwebtoken dotenv
+```
