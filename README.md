@@ -97,3 +97,8 @@ Now, without quitting the server, try adding `console.log("Hi!")` to the `apiSer
 # 04 - Let’s Create API Server
 
 It will do nothing yet, just listen on the port configured via `.env`.
+
+# 05 - Return Some Data
+
+Create a <kbd>GET</kbd>`/posts` endpoint that return a simple JSON object containing 2 posts.
+You can test the endpoint by opening http://localhost:3000/posts in your browser.
