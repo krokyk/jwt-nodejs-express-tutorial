@@ -112,3 +112,45 @@ File can contain multiple requests separated by three (or more) `###`.
 
 This is nice, but what if we don't want to display the whole content to anyone, but only the content they are authors of?
 We need to add some authentication to our server to do that.
+
+# 07 - Add an Authentication Endpoint
+
+* Create a <kbd>POST</kbd>`/login` endpoint.
+* It's <kbd>POST</kbd>, because we are going to be sending data (credentials) to the server.
+* Since the request body will be in a JSON format, we need to tell that to our server by configuring the middleware, so it understands the body of such requests. To configure _Express.js_ in such a way use this construct:
+  ```javascript
+  app.use(express.json())
+  ```
+  >**:information_source: INFO:** In short, middleware are those methods/functions/operations that are called **_between_** receiving the request and  sending back the response.
+* The endpoint should take care of the authentication of the user, but this is not in scope of this tutorial.
+  We will just assume the authentication was successful and the user really is who he claims to be.
+  Add this to the `apiServer.js`:
+  ```javascript
+  app.post("/login", (req, res) => {
+    // Authenticate the user here, e.g. by checking username and password against a database
+    // ...
+  })
+  ```
+* So we take the `username` from the request body and use it in creation of our `user` object that we want to store inside the generated token. Add this to the <kbd>POST</kbd>`/login` endpoint method:
+  ```javascript
+    const username = req.body.username // username from the request
+    const user = { name: username } // user object that is going to be a part of the token
+  ```
+* Import the `jsonwebtoken` library.
+  ```javascript
+  const jwt = require("jsonwebtoken")
+  ```
+* To create the token and send it back to the client, add this to the <kbd>POST</kbd>`/login` endpoint method:
+  ```javascript
+    const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET)
+    res.json({ accessToken: accessToken })
+  ```
+* We will store our secrets inside the `.env` file. You can use _Node.js_ `crypto` library to generate a strong secret (e.g. 64 random bytes converted to a hexadecimal string). Type this into **command line**:
+  ```console
+  node -p "require('crypto').randomBytes(64).toString('hex')" # -p prints out the evaluated input
+  ```
+  Each time you run that a new random string is generated.
+  Create `ACCESS_TOKEN_SECRET` environment variable in the `.env` file with that value, e.g.:
+  ```
+  ACCESS_TOKEN_SECRET=9fef66c25daba5b9a28a59f82e4bd799c83d891f4dae047c27c60796c0b5a9732cf66b87c21836f8df1ef8580de72b4c5d1197a6e811063d3b1ed03ed4fb8bb7
+  ```
