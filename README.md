@@ -93,3 +93,7 @@ npm run devStart
 Now, without quitting the server, try adding `console.log("Hi!")` to the `apiServer.js` and you should see the output in the console immediately after you save the file, because `nodemon` is monitoring it.
 
 ![Nodemon refreshes the server](images/03-02.png)
+
+# 04 - Let’s Create API Server
+
+It will do nothing yet, just listen on the port configured via `.env`.
