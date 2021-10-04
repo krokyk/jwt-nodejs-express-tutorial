@@ -102,3 +102,10 @@ It will do nothing yet, just listen on the port configured via `.env`.
 
 Create a <kbd>GET</kbd>`/posts` endpoint that return a simple JSON object containing 2 posts.
 You can test the endpoint by opening http://localhost:3000/posts in your browser.
+But we're going to...
+
+# 06 - Display Them in the REST Client Extension
+
+By using the [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) _VSCode_ extension.
+It can run requests defined in the `*.rest` files.
+File can contain multiple requests separated by three (or more) `###`.
