@@ -78,19 +78,18 @@ npm install --save-dev nodemon
 # 03 - Create Project Files
 
 ```
-touch server.js && touch .env
+touch apiServer.js && touch .env
 ```
-* `server.js` will contain our server code
+* `apiServer.js` will contain our API code
 * `.env` will contain our configuration
 
-Inside the `package.json` we will hook the `nodemon` to run our newly created `server.js`. You can now try to run the `server.js` with `nodemon`:
+Inside the `package.json` we will hook the `nodemon` to run our newly created `apiServer.js`. You can now try to run the `apiServer.js` with `nodemon`:
 
 ```
 npm run devStart
 ```
 ![Nodemon starts](images/03-01.png)
 
-Now, without quitting the server, try adding `console.log("Hi!")` to the `server.js` and you should see the output in the console immediately after you save the file, because `nodemon` is monitoring it.
+Now, without quitting the server, try adding `console.log("Hi!")` to the `apiServer.js` and you should see the output in the console immediately after you save the file, because `nodemon` is monitoring it.
 
 ![Nodemon refreshes the server](images/03-02.png)
-
