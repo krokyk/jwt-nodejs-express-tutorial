@@ -83,39 +83,96 @@ touch apiServer.js && touch .env
 * `apiServer.js` will contain our API code
 * `.env` will contain our configuration
 
-Inside the `package.json` we will hook the `nodemon` to run our newly created `apiServer.js`. You can now try to run the `apiServer.js` with `nodemon`:
+Inside the `package.json` we will hook the `nodemon` to run our newly created `apiServer.js`:
+```json
+  "scripts": {
+    "devStart": "nodemon apiServer.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+```
+You can now try to run the `apiServer.js` with `nodemon`:
 
 ```
 npm run devStart
 ```
 ![Nodemon starts](images/03-01.png)
 
-Now, without quitting the server, try adding `console.log("Hi!")` to the `apiServer.js` and you should see the output in the console immediately after you save the file, because `nodemon` is monitoring it.
+Now, without quitting the server, try adding
+```javascript
+console.log("Hi!")
+```
+to the `apiServer.js` and you should see the output in the console immediately after you save the file, because `nodemon` is monitoring it.
 
 ![Nodemon refreshes the server](images/03-02.png)
 
 # 04 - Let’s Create API Server
 
+Add `API_SERVER_PORT` env variable to `.env` file:
+```properties
+API_SERVER_PORT=3000
+```
+And this to the empty `apiServer.js`:
+```javascript
+require("dotenv").config()
+const PORT = process.env.API_SERVER_PORT
+
+const express = require("express")
+const app = express()
+
+app.listen(PORT)
+```
 It will do nothing yet, just listen on the port configured via `.env`.
 
 # 05 - Return Some Data
 
-Create a <kbd>GET</kbd>`/posts` endpoint that return a simple JSON object containing 2 posts.
+Create a <kbd>GET</kbd>`/posts` endpoint in `apiServer.js` that returns a simple JSON object containing 2 posts:
+```javascript
+const posts = [
+    {
+        author: "Jane",
+        title: "Post 1"
+    },
+    {
+        author: "John",
+        title: "Post 2"
+    }
+]
+
+app.get("/posts", (req, res) => {
+    res.json(posts)
+})
+```
 You can test the endpoint by opening http://localhost:3000/posts in your browser.
 But we're going to...
 
-# 06 - Display Them in the REST Client Extension
+# 06 - Use the REST Client Extension to Display Data
 
 By using the [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) _VSCode_ extension.
 It can run requests defined in the `*.rest` files.
 File can contain multiple requests separated by three (or more) `###`.
+Create file `requests.rest` in your project:
+```console
+touch requests.rest
+```
+With following content:
+```http
+#######################################
+GET http://localhost:3000/posts
+```
+In the editor, it will look like this:
+
+![requests.rest](images/06-01.png)
+
+Now, you can click on `Send Request` and a nice detailed response to our request will open in the new split window:
+
+![Response](images/06-02.png)
 
 This is nice, but what if we don't want to display the whole content to anyone, but only the content they are authors of?
 We need to add some authentication to our server to do that.
 
 # 07 - Add an Authentication Endpoint
 
-* Create a <kbd>POST</kbd>`/login` endpoint.
+* Create a <kbd>POST</kbd>`/login` endpoint in `apiServer.js`.
 * It's <kbd>POST</kbd>, because we are going to be sending data (credentials) to the server.
 * Since the request body will be in a JSON format, we need to tell that to our server by configuring the middleware, so it understands the body of such requests. To configure _Express.js_ in such a way use this construct:
   ```javascript
@@ -145,12 +202,12 @@ We need to add some authentication to our server to do that.
     const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET)
     res.json({ accessToken: accessToken })
   ```
-* We will store our secrets inside the `.env` file. You can use _Node.js_ `crypto` library to generate a strong secret (e.g. 64 random bytes converted to a hexadecimal string). Type this into **command line**:
-  ```console
+* We will store our secrets inside the `.env` file. You can use _Node.js_ `crypto` library to generate a strong secret (e.g. 64 random bytes converted to a hexadecimal string). Paste this into **command line** (yes, you can paste the whole line, including the comment :wink:):
+  ```bash
   node -p "require('crypto').randomBytes(64).toString('hex')" # -p prints out the evaluated input
   ```
   Each time you run that a new random string is generated.
   Create `ACCESS_TOKEN_SECRET` environment variable in the `.env` file with that value, e.g.:
-  ```
+  ```properties
   ACCESS_TOKEN_SECRET=9fef66c25daba5b9a28a59f82e4bd799c83d891f4dae047c27c60796c0b5a9732cf66b87c21836f8df1ef8580de72b4c5d1197a6e811063d3b1ed03ed4fb8bb7
   ```
