@@ -101,7 +101,7 @@ Now, without quitting the server, try adding
 ```javascript
 console.log("Hi!")
 ```
-to the `apiServer.js` and you should see the output in the console immediately after you save the file, because `nodemon` is monitoring it.
+to the `apiServer.js` and you should see the output in the terminal immediately after you save the file, because `nodemon` is monitoring it.
 
 ![Nodemon refreshes the server](images/03-02.png)
 
@@ -145,13 +145,12 @@ app.get("/posts", (req, res) => {
 You can test the endpoint by opening http://localhost:3000/posts in your browser.
 But we're going to...
 
-# 06 - Use the REST Client Extension to Display Data
+# 06 - Use the [REST Client Extension](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) to Display Data
 
-By using the [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) _VSCode_ extension.
 It can run requests defined in the `*.rest` files.
 File can contain multiple requests separated by three (or more) `###`.
-Create file `requests.rest` in your project:
-```console
+Create file `requests.rest` in your project by running this in terminal:
+```
 touch requests.rest
 ```
 With following content:
@@ -163,7 +162,7 @@ In the editor, it will look like this:
 
 ![requests.rest](images/06-01.png)
 
-Now, you can click on `Send Request` and a nice detailed response to our request will open in the new split window:
+Now, you can click on `Send Request` and a nice detailed response will open in the new split window:
 
 ![Response](images/06-02.png)
 
@@ -202,7 +201,7 @@ We need to add some authentication to our server to do that.
     const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET)
     res.json({ accessToken: accessToken })
   ```
-* We will store our secrets inside the `.env` file. You can use _Node.js_ `crypto` library to generate a strong secret (e.g. 64 random bytes converted to a hexadecimal string). Paste this into **command line** (yes, you can paste the whole line, including the comment :wink:):
+* We will store our secrets inside the `.env` file. You can use _Node.js_ `crypto` library to generate a strong secret (e.g. 64 random bytes converted to a hexadecimal string). Paste this into **terminal** (yes, you can paste the whole line, including the comment :wink:):
   ```bash
   node -p "require('crypto').randomBytes(64).toString('hex')" # -p prints out the evaluated input
   ```
