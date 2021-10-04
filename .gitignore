@@ -1,6 +1,8 @@
 # Dependency directories
 node_modules/
 
-# dotenv environment variables file
-.env
-!/project-evolution/**/.env
+#.env
+#apiServer.js
+#package-lock.json
+#package.json
+#!/project-evolution/**/.env
