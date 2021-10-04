@@ -29,9 +29,14 @@ Next, you're going to create a `vscode` dir in your user home directory and clon
 cd ~ && mkdir vscode && cd vscode/
 ```
 ```
-git clone git@github.com:krokyk/jwt-nodejs-express-tutorial.git
+git clone https://github.com/krokyk/jwt-nodejs-express-tutorial.git
 ```
->**:bulb: TIP:** You can also just [download the ZIP](https://github.com/krokyk/jwt-nodejs-express-tutorial/archive/refs/heads/main.zip) archive of this project from github and unzip it into the `vscode` dir (rename the folder if necessary).
+>**:bulb: TIP:** You can also clone the repository using SSH but you need to [setup your SSH keys](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account) first:
+>```
+>git clone git@github.com:krokyk/jwt-nodejs-express-tutorial.git
+>```
+
+>**:bulb: TIP:** You can also just [download the ZIP](https://github.com/krokyk/jwt-nodejs-express-tutorial/archive/refs/heads/main.zip) archive of this project from github and unzip it into the `vscode` dir (rename the folder to `jwt-nodejs-express-tutorial` if necessary).
 
 Now, launch _VSCode_ in the newly created dir
 ```
