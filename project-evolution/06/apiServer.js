@@ -15,7 +15,7 @@ const posts = [
     }
 ]
 
-app.get('/posts', (req, res) => {
+app.get("/posts", (req, res) => {
     res.json(posts)
 })
 
