@@ -109,3 +109,6 @@ But we're going to...
 By using the [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) _VSCode_ extension.
 It can run requests defined in the `*.rest` files.
 File can contain multiple requests separated by three (or more) `###`.
+
+This is nice, but what if we don't want to display the whole content to anyone, but only the content they are authors of?
+We need to add some authentication to our server to do that.
