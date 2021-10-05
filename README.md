@@ -210,3 +210,24 @@ We need to add some authentication to our server to do that.
   ```properties
   ACCESS_TOKEN_SECRET=9fef66c25daba5b9a28a59f82e4bd799c83d891f4dae047c27c60796c0b5a9732cf66b87c21836f8df1ef8580de72b4c5d1197a6e811063d3b1ed03ed4fb8bb7
   ```
+
+# 08 - Test the Authentication Endpoint
+
+Add the <kbd>POST</kbd>`/login` request to the `requests.rest`:
+```http
+#######################################
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+    "username": "Jane",
+    "password": "abcd"
+}
+```
+
+The response will look like this:
+
+![Response](images/08-01.png)
+
+That gibberish is actually our access token holding the information we've put in it (our `user` JSON object) along with some other stuff, added automatically by the `jsonwebtoken` library.
+>**:information_source TIP:** You can actually head out to the [official JWT page](https://jwt.io/) and paste your token there to see what's in it.
