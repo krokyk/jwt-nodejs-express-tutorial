@@ -162,11 +162,11 @@ In the editor, it will look like this:
 
 ![requests.rest](images/06-01.png)
 
-Now, you can click on `Send Request` and a nice detailed response will open in the new split window:
+Now, you can click on `Send Request` and the resulting response will open in the new split window:
 
 ![Response](images/06-02.png)
 
-This is nice, but what if we don't want to display the whole content to anyone, but only the content they are authors of?
+This is all nice, but what if we don't want to display the whole content to anyone, but only the content they are authors of?
 We need to add some authentication to our server to do that.
 
 # 07 - Add an Authentication Endpoint
