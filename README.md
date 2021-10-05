@@ -231,3 +231,40 @@ The response will look like this:
 
 That gibberish is actually our access token holding the information we've put in it (our `user` JSON object) along with some other stuff, added automatically by the `jsonwebtoken` library.
 >**:information_source TIP:** You can actually head out to the [official JWT page](https://jwt.io/) and paste your token there to see what's in it.
+
+# 09 - Verify the Access Token in the Middleware
+
+* in `apiServer.js` create a middleware function (or _route handler_) called `verifyToken`
+  ```javascript
+  function verifyToken(req, res, next) {
+      
+  }
+  ```
+* add it to the <kbd>GET</kbd>`/posts` endpoint to the chain of our _route handlers_
+  ```javascript
+  app.get("/posts", verifyToken, (req, res) => {
+      res.json(posts)
+  })
+  ```
+Inside `verifyToken` function:
+* extract the Authorization header from the request
+  ```javascript
+      const authHeader = req.headers["authorization"]
+  ```
+* verify there is actually such header and if yes, get the token from it.
+Since Authorization header value will be in format `Bearer <token>`, we just split it and take the second array element from it
+  ```javascript
+      const token = authHeader && authHeader.split(" ")[1]
+  ```
+* if the header is not there or the value of the header is malformed somehow, (e.g. there's no space between `Bearer` and `<token>`) we return **_401 Unauthorized_** HTTP status
+  ```javascript
+      if (token == null) return res.sendStatus(401)
+  ```
+* otherwise, we proceed to the verification of the token itself.
+If there's an error, we return **_403 Forbidden_** HTTP status. If not we pass the control to the `next` _route handler_ in sequence
+  ```javascript
+      jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, obj) => {
+          if (err) return res.sendStatus(403)
+          next()
+      })
+  ```
