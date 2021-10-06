@@ -213,7 +213,7 @@ You need to add some authentication to the server to do that.
   ACCESS_TOKEN_SECRET=9fef66c25daba5b9a28a59f82e4bd799c83d891f4dae047c27c60796c0b5a9732cf66b87c21836f8df1ef8580de72b4c5d1197a6e811063d3b1ed03ed4fb8bb7
   ```
 
-# 08 - Test the <kbd>POST</kbd>`/login` Endpoint
+# 08 - Test the POST `/login` Endpoint
 
 Add the <kbd>POST</kbd>`/login` request to the `requests.rest`:
 ```http
@@ -271,7 +271,7 @@ If there's an error, return **_403 Forbidden_** HTTP status. If not, pass the co
       })
   ```
 
-# 10 - Test the <kbd>GET</kbd>`/posts` Endpoint
+# 10 - Test the GET `/posts` Endpoint
 
 Just send <kbd>GET</kbd>`/posts` request from the `requests.rest` file as is. You should see **_Unauthorized_** in the response.
 
