@@ -324,3 +324,5 @@ In the last _route handler_ in <kbd>GET</kbd>`/posts` endpoint, instead of retur
 When you send the <kbd>GET</kbd>`/posts` request (in `requests.rest` file) now, you will no longer see all posts, just those where `author` field is the same as `name` in the token.
 
 ![Response](images/11-01.png)
+
+>**:information_source: TIP:** Replace the token in <kbd>GET</kbd>`/posts` request with John's token and see what posts are returned.
