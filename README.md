@@ -275,13 +275,17 @@ If there's an error, return **_403 Forbidden_** HTTP status. If not, pass the co
 
 Just send <kbd>GET</kbd>`/posts` request from the `requests.rest` file as is. You should see **_Unauthorized_** in the response.
 
-Now add an _Authorization_ header to the request in the line below the <kbd>GET</kbd>`/posts` request with a wrong token
+![Response](images/10-01.png)
+
+Now add an _Authorization_ header to the request in the line below the <kbd>GET</kbd>`/posts` request with a wrong token:
 ```http
 #######################################
 GET http://localhost:3000/posts
-Authorization: Bearer wrong-token
+Authorization: Bearer thisTokenIsObviouslyWrong
 ```
 and hit `Send Request`. You'll get **_Forbidden_** status in the response.
+
+![Response](images/10-02.png)
 
 Get the correct token by sending <kbd>POST</kbd>`/login` request, copy it and add it to the header:
 ```http
@@ -290,8 +294,33 @@ GET http://localhost:3000/posts
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSmFuZSIsImlhdCI6MTYzMzUyNjYwMX0.VD8o8dGKben_XdDxKt4oEmkMzJeQrWhk8i4bqNVa2-Q
 ```
 >**:information_source: TIP:** You will certainly get a different token than in the code snippet above, because it changes everytime the timestamp changes on your system.
-The reason behind that is that in the token payload the `"iat"` JSON field (generated automatically by the `jsonwebtoken` library) contains current time.
+The reason is that in the token's payload the `"iat"` JSON field (generated automatically by the `jsonwebtoken` library) contains the current timestamp.
 
 Now the response body should look the same as in [chapter 06](#06), i.e. it should contain the 2 posts we created earlier.
 So how do we filter the data in the response based on the author?
 You will do just that in the next chapter.
+
+# 11 - Filter the Data Based on the Token
+
+In order to do that, you just need to use the information that is inside the token's payload, field `name`. In the `verifyToken` method, rename the too-generic `obj` to `payload`.
+>**:information_source: TIP:** Use `console.log(payload)` to see what's in there whenever this _route handler_ is ivoked.
+You should see something like this in the terminal:
+>```javascript
+>   { name: 'Jane', iat: 1633526601 }
+>```
+Just before passing the processing of the request to the `next` _route handler_, add a custom JSON object `user` to the request.
+This object has a single field `name` with value coming from the token payload's field `name`:
+```javascript
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, payload) => {
+        if (err) return res.sendStatus(403)
+        req.user = { name: payload.name }
+        next()
+    })
+```
+In the last _route handler_ in <kbd>GET</kbd>`/posts` endpoint, instead of returning the full `posts` array, filter it based on post's `author` field:
+```javascript
+    res.json(posts.filter(p => p.author === req.user.name))
+```
+When you send the <kbd>GET</kbd>`/posts` request (in `requests.rest` file) now, you will no longer see all posts, just those where `author` field is the same as `name` in the token.
+
+![Response](images/11-01.png)
