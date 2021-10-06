@@ -14,7 +14,7 @@ Simple example on how to work with _JWT_ using _Node.js_ and _Express.js_ with _
     We will use it to test the calls to the API endpoints we're going to create
 * [nvm, node.js and npm](https://docs.microsoft.com/en-us/windows/dev-environment/javascript/nodejs-on-wsl#install-nvm-nodejs-and-npm) on _WSL_ (the instructions are perfectly OK for _WSL 1_, too) - install the recommended LTS version of the node.js
 
->**Note**: Actually you don't need to use _VSCode_ or _WSL_, it's up to you. I chose this combination because:
+>**Note:** Actually you don't need to use _VSCode_ or _WSL_, it's up to you. I chose this combination because:
 * VSCode is a great IDE and works very well with Node.js
 * It has a very powerful integrated terminal 
 * I like Bash shell more than Windows PowerShell or Cmd 
@@ -232,7 +232,7 @@ The response will look like this:
 ![Response](images/08-01.png)
 
 That gibberish is actually our access token holding the information we've put in it (our `user` JSON object) along with some other stuff, added automatically by the `jsonwebtoken` library.
->**:information_source TIP:** You can actually head out to the [official JWT page](https://jwt.io/) and paste your token there to see what's in it.
+>**:bulb: TIP:** You can actually head out to the [official JWT page](https://jwt.io/) and paste your token there to see what's in it.
 
 # 09 - Verify the Access Token in the Middleware
 
@@ -293,7 +293,7 @@ Get the correct token by sending <kbd>POST</kbd>`/login` request, copy it and ad
 GET http://localhost:3000/posts
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSmFuZSIsImlhdCI6MTYzMzUyNjYwMX0.VD8o8dGKben_XdDxKt4oEmkMzJeQrWhk8i4bqNVa2-Q
 ```
->**:information_source: TIP:** You will certainly get a different token than in the code snippet above, because it changes everytime the timestamp changes on your system.
+>**:bulb: TIP:** You will certainly get a different token than in the code snippet above, because it changes everytime the timestamp changes on your system.
 The reason is that in the token's payload the `"iat"` JSON field (generated automatically by the `jsonwebtoken` library) contains the current timestamp.
 
 Now the response body should look the same as in [chapter 06](#06), i.e. it should contain the 2 posts we created earlier.
@@ -303,7 +303,7 @@ You will do just that in the next chapter.
 # 11 - Filter the Data Based on the Token
 
 In order to do that, you just need to use the information that is inside the token's payload, field `name`. In the `verifyToken` method, rename the too-generic `obj` to `payload`.
->**:information_source: TIP:** Use `console.log(payload)` to see what's in there whenever this _route handler_ is ivoked.
+>**:bulb: TIP:** Use `console.log(payload)` to see what's in there whenever this _route handler_ is ivoked.
 You should see something like this in the terminal:
 >```javascript
 >   { name: 'Jane', iat: 1633526601 }
@@ -325,4 +325,4 @@ When you send the <kbd>GET</kbd>`/posts` request (in `requests.rest` file) now, 
 
 ![Response](images/11-01.png)
 
->**:information_source: TIP:** Replace the token in <kbd>GET</kbd>`/posts` request with John's token and see what posts are returned.
+>**:bulb: TIP:** Replace the token in <kbd>GET</kbd>`/posts` request with John's token and see what posts are returned.
