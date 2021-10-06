@@ -145,6 +145,8 @@ app.get("/posts", (req, res) => {
 You can test the endpoint by opening http://localhost:3000/posts in your browser.
 But we're going to...
 
+<div id="06"></div>
+
 # 06 - Use the [REST Client Extension](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) to Display Data
 
 It can run requests defined in the `*.rest` files.
@@ -211,7 +213,7 @@ You need to add some authentication to the server to do that.
   ACCESS_TOKEN_SECRET=9fef66c25daba5b9a28a59f82e4bd799c83d891f4dae047c27c60796c0b5a9732cf66b87c21836f8df1ef8580de72b4c5d1197a6e811063d3b1ed03ed4fb8bb7
   ```
 
-# 08 - Test the Authentication Endpoint
+# 08 - Test the <kbd>POST</kbd>`/login` Endpoint
 
 Add the <kbd>POST</kbd>`/login` request to the `requests.rest`:
 ```http
@@ -247,12 +249,12 @@ That gibberish is actually our access token holding the information we've put in
   })
   ```
 Inside `verifyToken` function:
-* extract the Authorization header from the request
+* extract the _Authorization_ header from the request
   ```javascript
       const authHeader = req.headers["authorization"]
   ```
 * Verify there is actually such header and if yes, get the token from it.
-Since Authorization header value will be in format `Bearer <token>`, split it (on the `space` character) and take the second array element from it
+Since _Authorization_ header value will be in format `Bearer <token>`, split it (on the `space` character) and take the second array element from it
   ```javascript
       const token = authHeader && authHeader.split(" ")[1]
   ```
@@ -268,3 +270,28 @@ If there's an error, return **_403 Forbidden_** HTTP status. If not, pass the co
           next()
       })
   ```
+
+# 10 - Test the <kbd>GET</kbd>`/posts` Endpoint
+
+Just send <kbd>GET</kbd>`/posts` request from the `requests.rest` file as is. You should see **_Unauthorized_** in the response.
+
+Now add an _Authorization_ header to the request in the line below the <kbd>GET</kbd>`/posts` request with a wrong token
+```http
+#######################################
+GET http://localhost:3000/posts
+Authorization: Bearer wrong-token
+```
+and hit `Send Request`. You'll get **_Forbidden_** status in the response.
+
+Get the correct token by sending <kbd>POST</kbd>`/login` request, copy it and add it to the header:
+```http
+#######################################
+GET http://localhost:3000/posts
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSmFuZSIsImlhdCI6MTYzMzUyNjYwMX0.VD8o8dGKben_XdDxKt4oEmkMzJeQrWhk8i4bqNVa2-Q
+```
+>**:information_source: TIP:** You will certainly get a different token than in the code snippet above, because it changes everytime the timestamp changes on your system.
+The reason behind that is that in the token payload the `"iat"` JSON field (generated automatically by the `jsonwebtoken` library) contains current time.
+
+Now the response body should look the same as in [chapter 06](#06), i.e. it should contain the 2 posts we created earlier.
+So how do we filter the data in the response based on the author?
+You will do just that in the next chapter.
