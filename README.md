@@ -70,7 +70,7 @@ npm install express jsonwebtoken dotenv
 * `jsonwebtoken` for working with _JWT_
 * `dotenv` to store our sensitive and configuration stuff inside the `.env` file (like secrets or ports)
 
-Install the development dependency `nodemon` which will automatically restart our server as we make changes to the code:
+Install the development dependency `nodemon` which will automatically restart the server as you make changes to the code:
 ```
 npm install --save-dev nodemon
 ```
@@ -83,7 +83,7 @@ touch apiServer.js && touch .env
 * `apiServer.js` will contain our API code
 * `.env` will contain our configuration
 
-Inside the `package.json` we will hook the `nodemon` to run our newly created `apiServer.js`:
+Inside the `package.json`, hook the `nodemon` to run newly created `apiServer.js`:
 ```json
   "scripts": {
     "devStart": "nodemon apiServer.js",
@@ -166,14 +166,14 @@ Now, you can click on `Send Request` and the resulting response will open in the
 
 ![Response](images/06-02.png)
 
-This is all nice, but what if we don't want to display the whole content to anyone, but only the content they are authors of?
-We need to add some authentication to our server to do that.
+This is all nice, but what if you don't want to display the whole content to anyone, but only the content they are authors of?
+You need to add some authentication to the server to do that.
 
 # 07 - Add an Authentication Endpoint
 
 * Create a <kbd>POST</kbd>`/login` endpoint in `apiServer.js`.
-* It's <kbd>POST</kbd>, because we are going to be sending data (credentials) to the server.
-* Since the request body will be in a JSON format, we need to tell that to our server by configuring the middleware, so it understands the body of such requests. To configure _Express.js_ in such a way use this construct:
+* It's <kbd>POST</kbd>, because you are going to be sending data (credentials) to the server.
+* Since the request body will be in a JSON format, you need to tell that to the server by configuring the middleware, so it understands the body of such requests. To configure _Express.js_ in such a way use this construct:
   ```javascript
   app.use(express.json())
   ```
@@ -187,7 +187,7 @@ We need to add some authentication to our server to do that.
     // ...
   })
   ```
-* So we take the `username` from the request body and use it in creation of our `user` object that we want to store inside the generated token. Add this to the <kbd>POST</kbd>`/login` endpoint method:
+* So take the `username` from the request body and use it in creation of `user` object that will be stored inside the generated token. Add this to the <kbd>POST</kbd>`/login` endpoint method:
   ```javascript
     const username = req.body.username // username from the request
     const user = { name: username } // user object that is going to be a part of the token
@@ -201,7 +201,7 @@ We need to add some authentication to our server to do that.
     const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET)
     res.json({ accessToken: accessToken })
   ```
-* We will store our secrets inside the `.env` file. You can use _Node.js_ `crypto` library to generate a strong secret (e.g. 64 random bytes converted to a hexadecimal string). Paste this into **terminal** (yes, you can paste the whole line, including the comment :wink:):
+* Store the secret inside the `.env` file. You can use _Node.js_ `crypto` library to generate a strong secret (e.g. 64 random bytes converted to a hexadecimal string). Paste this into **terminal** (yes, you can paste the whole line, including the comment :wink:):
   ```bash
   node -p "require('crypto').randomBytes(64).toString('hex')" # -p prints out the evaluated input
   ```
@@ -251,17 +251,17 @@ Inside `verifyToken` function:
   ```javascript
       const authHeader = req.headers["authorization"]
   ```
-* verify there is actually such header and if yes, get the token from it.
-Since Authorization header value will be in format `Bearer <token>`, we just split it and take the second array element from it
+* Verify there is actually such header and if yes, get the token from it.
+Since Authorization header value will be in format `Bearer <token>`, split it (on the `space` character) and take the second array element from it
   ```javascript
       const token = authHeader && authHeader.split(" ")[1]
   ```
-* if the header is not there or the value of the header is malformed somehow, (e.g. there's no space between `Bearer` and `<token>`) we return **_401 Unauthorized_** HTTP status
+* if the header is not there or the value of the header is malformed somehow (e.g. there's no space between `Bearer` and `<token>`), return **_401 Unauthorized_** HTTP status
   ```javascript
       if (token == null) return res.sendStatus(401)
   ```
-* otherwise, we proceed to the verification of the token itself.
-If there's an error, we return **_403 Forbidden_** HTTP status. If not we pass the control to the `next` _route handler_ in sequence
+* otherwise, proceed to the verification of the token itself.
+If there's an error, return **_403 Forbidden_** HTTP status. If not, pass the control to the `next` _route handler_ in sequence
   ```javascript
       jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, obj) => {
           if (err) return res.sendStatus(403)
