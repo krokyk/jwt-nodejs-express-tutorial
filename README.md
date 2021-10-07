@@ -323,6 +323,58 @@ In the last _route handler_ in <kbd>GET</kbd>`/posts` endpoint, instead of retur
 ```
 When you send the <kbd>GET</kbd>`/posts` request (in `requests.rest` file) now, you will no longer see all posts, just those where `author` field is the same as `name` in the token.
 
+<div id="11-01">
+
 ![Response](images/11-01.png)
 
 >**:bulb: TIP:** Replace the token in <kbd>GET</kbd>`/posts` request with John's token and see what posts are returned.
+
+# 12 - Working with JWTs across Different Servers
+
+To see how easy it is to work with the token across different servers (meaning you login on server "A" and display the posts on server "B"), make a copy of the `apiServer.js` and call it `authServer.js`. Run this in the terminal:
+```
+cp apiServer.js authServer.js
+```
+Add a startup command for the new server to the `package.json`, just after the `"apiStart":` field :
+```json
+    "authStart": "nodemon authServer.js",
+```
+Add new `AUTH_SERVER_PORT` env variable to `.env` file:
+```properties
+AUTH_SERVER_PORT=4000
+```
+And use it for the `PORT` of your new `authServer.js`:
+```javascript
+const PORT = process.env.AUTH_SERVER_PORT
+```
+Run both servers from the separate terminals:
+```
+npm run apiStart
+```
+```
+npm run authStart
+```
+>**:bulb: TIP:** You can either open a new terminal or split the existing terminal in _VSCode_.
+To do that, focus into your terminal (click inside it) and hit <kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>\`</kbd> (for new terminal) or <kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>5</kbd> (for split terminal).
+I prefer the split option, because I can see what's going on in both terminals simultaneously.
+
+![Split Terminal](images/12-01.png)
+
+Now that both servers are running, in `requests.rest` alter the <kbd>POST</kbd>`/login` request to use port 4000 (i.e. different server), copy the `accessToken` and paste it in the original <kbd>GET</kbd>`/posts` on the `port 3000`:
+```http
+#######################################
+GET http://localhost:3000/posts
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSmFuZSIsImlhdCI6MTYzMzYyNTE4NH0.bXl9QVdcclzhvYIoFAKL44ErafUiRlwN0RDQ2bkWhEI
+
+#######################################
+POST http://localhost:4000/login
+Content-Type: application/json
+
+{
+    "username": "Jane",
+    "password": "abcd"
+}
+```
+You should see the same response as in [chapter 11 screenshot](#11-01) where we used the same server for both requests.
+
+Key thing here is that both servers share the same `ACCESS_TOKEN_SECRET` and thus are able to work with the token that was signed by it. This is something that would be hard to do if you used sessions to handle this type of situation, because session is bound to a particular server. But with JWT, the needed information is actually stored within the token itself and once issued, it lives on its own inside the requests themselves.
