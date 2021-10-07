@@ -11,7 +11,7 @@ Simple example on how to work with _JWT_ using _Node.js_ and _Express.js_ with _
 * [Visual Studio Code on WSL](https://code.visualstudio.com/docs/remote/wsl)
     * VSCode extension [Remote - WSL](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-wsl)
     * VSCode extension [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) - you can use any other REST client you are comfortable with, e.g. [Postman](https://www.postman.com/).
-    We will use it to test the calls to the API endpoints we're going to create
+    You will use it to test the calls to the API endpoints we're going to create
 * [nvm, node.js and npm](https://docs.microsoft.com/en-us/windows/dev-environment/javascript/nodejs-on-wsl#install-nvm-nodejs-and-npm) on _WSL_ (the instructions are perfectly OK for _WSL 1_, too) - install the recommended LTS version of the node.js
 
 >**Note:** Actually you don't need to use _VSCode_ or _WSL_, it's up to you. I chose this combination because:
@@ -42,7 +42,7 @@ Now, launch _VSCode_ in the newly created dir
 ```
 code jwt-nodejs-express-tutorial/
 ```
-You can close _WSL_ prompt now. We will be working exclusively in _VSCode_ from now on.
+You can close _WSL_ prompt now. You will be working exclusively in _VSCode_ from now on.
 
 Inspect the contents of the project.
 You can ignore the `images` dir (it contains images for this readme) but take a look into the one called `project-evolution`.
@@ -181,7 +181,7 @@ You need to add some authentication to the server to do that.
   ```
   >**:information_source: INFO:** In short, middleware are those methods/functions/operations that are called **_between_** receiving the request and  sending back the response.
 * The endpoint should take care of the authentication of the user, but this is not in scope of this tutorial.
-  We will just assume the authentication was successful and the user really is who he claims to be.
+  You can just assume the authentication was successful and the user really is who he claims to be.
   Add this to the `apiServer.js`:
   ```javascript
   app.post("/login", (req, res) => {
@@ -296,9 +296,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSmFuZSIsI
 >**:bulb: TIP:** You will certainly get a different token than in the code snippet above, because it changes everytime the timestamp changes on your system.
 The reason is that in the token's payload the `"iat"` JSON field (generated automatically by the `jsonwebtoken` library) contains the current timestamp.
 
-Now the response body should look the same as in [chapter 06](#06), i.e. it should contain the 2 posts we created earlier.
-So how do we filter the data in the response based on the author?
-You will do just that in the next chapter.
+Now the response body should look the same as in [chapter 06](#06), i.e. it should contain the 2 posts you created earlier.
+So how do you filter the data in the response based on the author?
 
 # 11 - Filter the Data Based on the Token
 
@@ -375,6 +374,20 @@ Content-Type: application/json
     "password": "abcd"
 }
 ```
-You should see the same response as in [chapter 11 screenshot](#11-01) where we used the same server for both requests.
+You should see the same response as in [chapter 11 screenshot](#11-01) where you used the same server for both requests.
 
 Key thing here is that both servers share the same `ACCESS_TOKEN_SECRET` and thus are able to work with the token that was signed by it. This is something that would be hard to do if you used sessions to handle this type of situation, because session is bound to a particular server. But with JWT, the needed information is actually stored within the token itself and once issued, it lives on its own inside the requests themselves.
+
+# 13 - Cleanup the Server Code
+
+You now have 2 servers that will fulfill 2 different roles.
+The `apiServer.js` will serve the data if the token is valid, and the `authServer.js` will issue the tokens.
+
+Remove the authentication stuff from the `apiServer.js`:
+* remove the whole <kbd>POST</kbd>`/login` endpoint
+
+And remove the API stuff from the `authServer.js`:
+* remove the whole <kbd>GET</kbd>`/posts` endpoint
+* remove the `posts` array
+
+Keep the `verifyToken` function in both.
