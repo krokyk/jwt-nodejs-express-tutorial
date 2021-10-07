@@ -4,7 +4,7 @@
   "description": "<p align=\"center\">   <img src=\"images/logo.png\" height=\"100\" />   <h1 align=\"center\">JWT + Node.js + Express Tutorial</h1> </p>",
   "main": "index.js",
   "scripts": {
-    "devStart": "nodemon apiServer.js",
+    "apiStart": "nodemon apiServer.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

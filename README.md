@@ -86,14 +86,14 @@ touch apiServer.js && touch .env
 Inside the `package.json`, hook the `nodemon` to run newly created `apiServer.js`:
 ```json
   "scripts": {
-    "devStart": "nodemon apiServer.js",
+    "apiStart": "nodemon apiServer.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
 ```
 You can now try to run the `apiServer.js` with `nodemon`:
 
 ```
-npm run devStart
+npm run apiStart
 ```
 ![Nodemon starts](images/03-01.png)
 
