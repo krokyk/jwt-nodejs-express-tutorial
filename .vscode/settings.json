@@ -1,4 +1,7 @@
 {
     "editor.wordWrap": "bounded",
-    "editor.wordWrapColumn": 800
+    "editor.wordWrapColumn": 800,
+    "files.watcherExclude": {
+        "**/*": false,
+    },
 }

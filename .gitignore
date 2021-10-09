@@ -5,4 +5,4 @@ node_modules/
 #apiServer.js
 #package-lock.json
 #package.json
-#!/project-evolution/**/.env
+#!/chapter-src/**/.env
