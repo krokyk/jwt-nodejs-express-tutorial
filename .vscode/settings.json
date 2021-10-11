@@ -2,6 +2,7 @@
     "editor.wordWrap": "bounded",
     "editor.wordWrapColumn": 800,
     "files.watcherExclude": {
-        "**/*": false,
+        // workaround for WSL1 problems with renaming a dir
+        // "**/*": true,
     },
 }
