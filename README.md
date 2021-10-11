@@ -42,24 +42,29 @@ Now, launch _VSCode_ in the newly created dir
 ```
 code jwt-nodejs-express-tutorial/
 ```
-You can close _WSL_ prompt now. You will be working exclusively in _VSCode_ from now on.
+You can close _WSL_ prompt now.
+You will be working exclusively in _VSCode_ from now on.
 
-Inspect the contents of the project.
-You can ignore the `images` dir (it contains images for this readme) but take a look into the one called `chapter-src`.
+# Initial Content of the Project
 
-This dir holds files arranged into subdirs which reflect their "evolution" as they are created/changed.
-These subdirs are numbered and each number represents a certain state of the project content.
-The content matches the content you should have in your project root dir if you follow the tutorial.
-The subchapters here are numbered the same way, so after you finish one subchapter, your files should have the same content as those you find under `chapter-src` subdir with the same number.
+You can ignore the `images` dir (it contains images for this readme) and `.vscode` (workspace configuration for this project) but take a look into the one called `chapter-src`.
 
->**:bulb: TIP:** It's best to compare the contents of the project dir with each of the subdirs in `chapter-src` dir as you go through the tutorial chapters. You can use any tool that is able to compare the directory contents and easily display changed files and then compare those files to see what the change from that chapter is. My tool of choice for that is [Beyond Compare](https://www.scootersoftware.com/)
+This dir holds files arranged into subdirs.
+Each subdir reflects a step in the project's "evolution" as the files are created/changed during the course of this tutorial.
+These subdirs are numbered and each subdir represents a certain state of the project content.
+The subchapters are numbered as well and their number corresponds to the subdir names.
+After you finish one subchapter, your files in the root of the project should have the same (or very very similar) content as those you find in `chapter-src` under subdir with the same number as the chapter you just finished.
+
+>**:bulb: TIP:** It's helpful to compare the contents of the project dir with each of the subdirs in `chapter-src` dir as you go through the tutorial chapters to make sure you did not make any mistake.
+You can use any tool that is able to compare the directory contents and easily display changed files and then compare those files to see what the change from that chapter is.
+My tool of choice for that is [Beyond Compare](https://www.scootersoftware.com/).
 
 # 01 - Initialize the Project
 
 ```
 npm init -y
 ```
-Notice that `package.json` was created with some default values derived from our current content.
+>**:information_source: INFO:** File `package.json` was created with some default values derived from our current content.
 
 # 02 - Install Required Libraries
 
@@ -74,6 +79,8 @@ Install the development dependency `nodemon` which will automatically restart th
 ```
 npm install --save-dev nodemon
 ```
+
+>**:information_source: INFO:** Another file called `package-lock.json` and whole subdir called `node_modules` were created.
 
 # 03 - Create Project Files
 
@@ -273,7 +280,8 @@ If there's an error, return **_403 Forbidden_** HTTP status. If not, pass the co
 
 # 10 - Test the GET `/posts` Endpoint
 
-Just send <kbd>GET</kbd>`/posts` request from the `requests.rest` file as is. You should see **_Unauthorized_** in the response.
+Just send <kbd>GET</kbd>`/posts` request from the `requests.rest` file as is.
+You should see **_Unauthorized_** in the response.
 
 ![Response](images/10-01.png)
 
@@ -283,7 +291,8 @@ Now add an _Authorization_ header to the request in the line below the <kbd>GET<
 GET http://localhost:3000/posts
 Authorization: Bearer thisTokenIsObviouslyWrong
 ```
-and hit `Send Request`. You'll get **_Forbidden_** status in the response.
+and hit `Send Request`.
+You'll get **_Forbidden_** status in the response.
 
 ![Response](images/10-02.png)
 
@@ -301,7 +310,8 @@ So how do you filter the data in the response based on the author?
 
 # 11 - Filter the Data Based on the Token
 
-In order to do that, you just need to use the information that is inside the token's payload, field `name`. In the `verifyToken` method, rename the too-generic `obj` to `payload`.
+In order to do that, you just need to use the information that is inside the token's payload, field `name`.
+In the `verifyToken` method, rename the too-generic `obj` to `payload`.
 >**:bulb: TIP:** Use `console.log(payload)` to see what's in there whenever this _route handler_ is ivoked.
 You should see something like this in the terminal:
 >```javascript
@@ -376,7 +386,9 @@ Content-Type: application/json
 ```
 You should see the same response as in [chapter 11 screenshot](#11-01) where you used the same server for both requests.
 
-Key thing here is that both servers share the same `ACCESS_TOKEN_SECRET` and thus are able to work with the token that was signed by it. This is something that would be hard to do if you used sessions to handle this type of situation, because session is bound to a particular server. But with JWT, the needed information is actually stored within the token itself and once issued, it lives on its own inside the requests themselves.
+Key thing here is that both servers share the same `ACCESS_TOKEN_SECRET` and thus are able to work with the token that was signed by it.
+This is something that would be hard to do if you used sessions to handle this type of situation, because session is bound to a particular server.
+But with JWT, the needed information is actually stored within the token itself and once issued, it lives on its own inside the requests themselves.
 
 # 13 - Cleanup the Server Code
 
