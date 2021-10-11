@@ -169,7 +169,7 @@ Now, you can click on `Send Request` and the resulting response will open in the
 ![Response](images/06-02.png)
 
 This is all nice, but what if you don't want to display the whole content to anyone, but only the content they are authors of?
-You need to add some authentication to the server to do that.
+You need to add some authentication and authorization to the server to do that.
 
 # 07 - Add an Authentication Endpoint
 
