@@ -434,7 +434,58 @@ Now, when you login and use the newly generated token, you can access the <kbd>G
 After that, you will no longer be able to display the posts.
 Instead, you'll get **_403 Forbidden_** HTTP status.
 You would need to login again to get the new access token.
+You can test it now using `request.rest`.
 
 >**:bulb: TIP:** Go ahead to the [jwt.io](https://jwt.io) and paste the new token there to see that a new _claim_ was added to the payload, `"exp": <timestamp>`.
 It stands for _Expiration Time_ and if you compare it to the `"iat"` you'll see it's 15s greater.
 It's just another one of [standard JWT claims](https://www.iana.org/assignments/jwt/jwt.xhtml) that you can find in JWTs.
+
+# 15 - Create a Refresh Token
+
+In previous chapter you made sure that the token cannot be used indefinitely.
+
+But what should user do when his access token expires?
+Well, you can ask the user to login again, but that is not a good user experience and authenticating a user can be a costly operation.
+Here's where refresh tokens come into play.
+
+Usually, after user logs in, login response contains not just the access token, but also a refresh token.
+In terms of content, it's just another JWT, like the access token.
+While access token is short-lived, refresh token is meant to be long-lived.
+You will actually create a refresh token that will have _no expiration_ and you will handle the expiration (or invalidation) explicitly in the code, for example when user logs out.
+Whenever an access token expires, you will send a request to refresh your access token by using - you guessed it - refresh token.
+
+To generate a new secret for the refresh token run this in the terminal:
+```bash
+node -p "require('crypto').randomBytes(64).toString('hex')"
+```
+
+Create `REFRESH_TOKEN_SECRET` environment variable in the `.env` file with the generated value, e.g.:
+```properties
+REFRESH_TOKEN_SECRET=d734cf2b229686c7f0314fb680559c7822b381ae7f357cbf46967afd3fe2151677f907da3bb2acd7603939e989cdda24438def585436dd2cdb958680766d7966
+```
+
+In order to keep track of the refresh tokens and to have an ability to invalidate them, you need to store them somewhere.
+Usually it's done in a fast database like [Redis](https://redis.io/).
+In this tutorial you will just use an array of refresh tokens inside the `authServer.js` code.
+Declare an empty array of refresh tokens before the <kbd>POST</kbd>`/login` endpoint:
+```javascript
+let refreshTokens = []
+```
+
+Change the <kbd>POST</kbd>`/login` endpoint to also create a refresh token.
+Remember, refresh token has no expiration.
+Add this under the creation of the access token:
+```javascript
+    const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET)
+```
+
+Store the new refresh token in the array you created and add it to the existing response.
+```javascript
+    refreshTokens.push(refreshToken)
+    res.json({ accessToken: accessToken, refreshToken: refreshToken })
+```
+
+Finally, test your changes by sending a <kbd>POST</kbd>`/login` request to the server.
+You will get a response containing access AND refresh token:
+
+![Response](images/15-01.png)
