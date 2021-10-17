@@ -1,19 +1,24 @@
 require("dotenv").config()
-const PORT = process.env.AUTH_SERVER_PORT
+const PORT = process.env.API_SERVER_PORT
 
 const express = require("express")
 const app = express()
 app.use(express.json())
 const jwt = require("jsonwebtoken")
 
-app.post("/login", (req, res) => {
-    // Authenticate user
+const posts = [
+    {
+        author: "Jane",
+        title: "Post 1"
+    },
+    {
+        author: "John",
+        title: "Post 2"
+    }
+]
 
-    const username = req.body.username
-    const user = { name: username }
-
-    const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "15s" })
-    res.json({ accessToken: accessToken })
+app.get("/posts", verifyToken, (req, res) => {
+    res.json(posts.filter(p => p.author === req.user.name))
 })
 
 function verifyToken(req, res, next) {
