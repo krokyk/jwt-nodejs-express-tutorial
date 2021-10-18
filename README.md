@@ -489,3 +489,6 @@ Finally, test your changes by sending a <kbd>POST</kbd>`/login` request to the s
 You will get a response containing access AND refresh token:
 
 ![Response](images/15-01.png)
+
+# 16 - Getting a New Access Token Based on a Refresh Token
+
