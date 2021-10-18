@@ -61,6 +61,8 @@ My tool of choice for that is [Beyond Compare](https://www.scootersoftware.com/)
 
 # 01 - Initialize the Project
 
+If you do not have a terminal opened yet, hit <kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>\`</kbd> or go to the _Terminal &rarr; New Terminal_ in the menu bar.
+Type this in your terminal:
 ```
 npm init -y
 ```
