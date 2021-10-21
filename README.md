@@ -420,16 +420,23 @@ If nothing else, changing the secret will invalidate **all tokens** that were ev
 Maybe that's not what you want to do.
 
 So, how do you make a specific token invalid?
-There are more ways that you can directly or indirectly make a token invalid.
+There are more ways to directly or indirectly make a token invalid.
 
 One of the most common ways is to set an expiry date for the issued token.
 In real life, depending on the use-case this is set to a reasonably short time, usually minutes, hours or days.
 The shorter the expiration time is, the more secure the token becomes.
 In case the token is stolen, it can be only used for a limited period of time.
 
-Change how the `accessToken` is generated in the <kbd>POST</kbd>`/login` endpoint in `authServer.js`:
+Add a utility method
 ```javascript
-    const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "15s" })
+function createAccessToken(user) {
+    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "15s" })
+}
+```
+
+and change how the `accessToken` is generated in the <kbd>POST</kbd>`/login` endpoint in `authServer.js`:
+```javascript
+    const accessToken = createAccessToken(user)
 ```
 
 Now, when you login and use the newly generated token, you can access the <kbd>GET</kbd>`/posts` for 15 seconds.
@@ -494,3 +501,31 @@ You will get a response containing access AND refresh token:
 
 # 16 - Getting a New Access Token Based on a Refresh Token
 
+Let's adjust the existing `verifyToken` function to work with the _refresh tokens_. It will be similar to the `verifyToken` function that is used in <kbd>GET</kbd>`/posts` endpoint in `apiServer.js` with 2 small differences:
+* if the `Authorization` header contains seemingly valid token it will next check refresh token "storage" that you created in the previous chapter for an existence of the incoming refresh token to confirm that such token was indeed issued previously and return **_403 Forbidden_** if it wasn't
+  ```javascript
+      if (!refreshTokens.includes(token)) return res.sendStatus(403)
+  ```
+* since it's not an access token now but refresh token, you must use the correct secret to verify the signature in `jwt.verify()` function:
+  ```javascript
+      jwt.verify(token, process.env.REFRESH_TOKEN_SECRET, (err, payload) => {
+  ```
+
+Create a new <kbd>GET</kbd>`/accessToken` endpoint in `authServer.js` that will verify the refresh token in the request (using the adjusted `verifyToken` _route handler_) and return a new access token valid for another 15s:
+```javascript
+app.get("/accessToken", verifyToken, (req, res) => {
+    const user = req.user
+    const accessToken = createAccessToken(user)
+    res.json({ accessToken: accessToken })
+})
+```
+
+Now, when user's _access token_ expires, he's able to request a new one by calling the <kbd>GET</kbd>`/accessToken` given that a valid _refresh token_ is provided in the header.
+All this without being required to login again.
+
+Add the new request to `requests.rest` to try it out:
+```html
+#######################################
+GET http://localhost:4000/accessToken
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSmFuZSIsImlhdCI6MTYzNDUwOTUxNX0.pM4SAXRNy4QcCdFgmtr5xmSKazkF-V-RXEJKT2nu5us
+```

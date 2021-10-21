@@ -14,11 +14,15 @@ app.post("/login", (req, res) => {
     const username = req.body.username
     const user = { name: username }
 
-    const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "15s" })
+    const accessToken = createAccessToken(user)
     const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET)
     refreshTokens.push(refreshToken)
     res.json({ accessToken: accessToken, refreshToken: refreshToken })
 })
+
+function createAccessToken(user) {
+    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "15s" })
+}
 
 function verifyToken(req, res, next) {
     const authHeader = req.headers["authorization"]

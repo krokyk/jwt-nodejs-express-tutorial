@@ -14,18 +14,29 @@ app.post("/login", (req, res) => {
     const username = req.body.username
     const user = { name: username }
 
-    const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "15s" })
+    const accessToken = createAccessToken(user)
     const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET)
     refreshTokens.push(refreshToken)
     res.json({ accessToken: accessToken, refreshToken: refreshToken })
 })
 
+app.get("/accessToken", verifyToken, (req, res) => {
+    const user = req.user
+    const accessToken = createAccessToken(user)
+    res.json({ accessToken: accessToken })
+})
+
+function createAccessToken(user) {
+    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "15s" })
+}
+
 function verifyToken(req, res, next) {
     const authHeader = req.headers["authorization"]
     const token = authHeader && authHeader.split(" ")[1]
     if (token == null) return res.sendStatus(401)
+    if (!refreshTokens.includes(token)) return res.sendStatus(403)
     
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, payload) => {
+    jwt.verify(token, process.env.REFRESH_TOKEN_SECRET, (err, payload) => {
         if (err) return res.sendStatus(403)
         req.user = { name: payload.name }
         next()

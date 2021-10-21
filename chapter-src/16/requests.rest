@@ -1,6 +1,10 @@
 #######################################
 GET http://localhost:3000/posts
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSmFuZSIsImlhdCI6MTYzNDUwMDAzNSwiZXhwIjoxNjM0NTAwMDUwfQ.EsoYFy2NpPjDE65lviLv3Q_0KE7L6P8nvtOBCJ752s8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSmFuZSIsImlhdCI6MTYzNDUwOTc3OCwiZXhwIjoxNjM0NTA5NzkzfQ.XsoNXdQJv6FOjmH7OU9ztmrwhbnfQIXZX0aP05bVv9k
+
+#######################################
+GET http://localhost:4000/accessToken
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSmFuZSIsImlhdCI6MTYzNDUwOTUxNX0.pM4SAXRNy4QcCdFgmtr5xmSKazkF-V-RXEJKT2nu5us
 
 #######################################
 POST http://localhost:4000/login
