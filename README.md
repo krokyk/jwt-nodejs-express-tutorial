@@ -194,14 +194,13 @@ You need to add some authentication and authorization to the server to do that.
   Add this to the `apiServer.js`:
   ```javascript
   app.post("/login", (req, res) => {
-    // Authenticate the user here, e.g. by checking username and password against a database
-    // ...
+    // Authenticate user
   })
   ```
 * So take the `username` from the request body and use it in creation of `user` object that will be stored inside the generated token. Add this to the <kbd>POST</kbd>`/login` endpoint method:
   ```javascript
-    const username = req.body.username // username from the request
-    const user = { name: username } // user object that is going to be a part of the token
+    const username = req.body.username
+    const user = { name: username }
   ```
 * Import the `jsonwebtoken` library.
   ```javascript
@@ -216,7 +215,7 @@ You need to add some authentication and authorization to the server to do that.
   ```bash
   node -p "require('crypto').randomBytes(64).toString('hex')" # -p prints out the evaluated input
   ```
-  Each time you run that a new random string is generated.
+  Each time you run that a new random string is generated.XXX
   Create `ACCESS_TOKEN_SECRET` environment variable in the `.env` file with that value, e.g.:
   ```properties
   ACCESS_TOKEN_SECRET=9fef66c25daba5b9a28a59f82e4bd799c83d891f4dae047c27c60796c0b5a9732cf66b87c21836f8df1ef8580de72b4c5d1197a6e811063d3b1ed03ed4fb8bb7
@@ -529,3 +528,56 @@ Add the new request to `requests.rest` to try it out:
 GET http://localhost:4000/accessToken
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSmFuZSIsImlhdCI6MTYzNDUwOTUxNX0.pM4SAXRNy4QcCdFgmtr5xmSKazkF-V-RXEJKT2nu5us
 ```
+
+# 17 - Add a Logout Endpoint
+
+As long as the server has the _refresh token_ in its storage, user is able to use it to get the new _access token_.
+If you login, you get a refresh token which is stored in the `refreshTokens` array and as long as it is there, you can use it indefinitely to get a new valid access token.
+
+Let's create a <kbd>DELETE</kbd>`/logout` endpoint in `authServer.js` that will remove the supplied refresh token from the server's storage so that nobody will be able to use it anymore to get an access token.
+>**:bulb: TIP:** Even though it can be virtually any HTTP method, make it a <kbd>DELETE</kbd> because you will be deleting something from the server.
+```javascript
+app.delete("/logout", (req, res) => {
+    const refreshToken = req.body.refreshToken
+    refreshTokens = refreshTokens.filter(token => token !== refreshToken)
+    res.sendStatus(204)
+})
+```
+
+To test the endpoint, create a new request in `requests.rest`:
+```html
+#######################################
+DELETE http://localhost:4000/logout
+Content-Type: application/json
+
+{
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSmFuZSIsImlhdCI6MTYzNTAwNjI1NX0.1ktdYG8iENKlrbMs5iSmiUkbsUd-9lkCmuqnYA3mthc"
+}
+```
+
+If everything is correct, you will receive **204 No Content** HTTP status in the response.
+The server will remove the token it got in the request body from the `refreshTokens` array and this refresh token will no longer work in the <kbd>GET</kbd>`/accessToken` endpoint.
+
+You might be asking yourself, what about the access token?
+Nothing was done about it in the <kbd>DELETE</kbd>`/logout` endpoint.
+Well yes, it will still work but that's why you set a short expiration in it.
+
+![Logout](images/logout-meme.jpg)
+
+>**:bulb: TIP:** Read this [blog post](https://medium.com/devgorilla/how-to-log-out-when-using-jwt-a8c7823e8a6) to get some ideas on how to implement logout functionality with JWTs.
+>
+>It is said that using JWT should be stateless, meaning that you should store everything you need in the payload and skip performing a DB query on every request.
+>But if you plan to have a strict log out functionality, that cannot wait for the token auto-expiration, even though you have cleaned the token from the client side, then you might need to neglect the stateless logic and do some queries.
+>
+>An implementation would probably be to store a so-called "blacklist" of all the tokens that are valid no more and have not expired yet.
+>You can use a DB that has TTL option on documents which would be set to the amount of time left until the token is expired.
+>**Redis** is a good option for this, that will allow fast in memory access to the list.
+>Then, in a middleware that runs on every authorized request, you should check if provided token is in The Blacklist.
+>If it is, you should throw an unauthorized error.
+>And if it is not, let it go and the JWT verification will handle it and identify whether it is expired or still active.
+>
+>In short, you should follow these 4 points:
+>1. Set a reasonable expiration time on tokens
+>2. Delete the stored token from client side upon log out
+>3. Have DB of no longer active tokens that still have some time to live
+>4. Query provided token against The Blacklist on every authorized request
