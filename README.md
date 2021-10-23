@@ -582,3 +582,9 @@ Well yes, it will still work but that's why you set a short expiration in it.
 >2. Delete the stored token from client side upon log out
 >3. Have DB of no longer active tokens that still have some time to live
 >4. Query provided token against The Blacklist on every authorized request
+
+# Summary
+
+That's it!
+Now you should have a fully functional code that consists of two servers.
+You should be able to login, display posts with the issued access token, refresh that token when it expires and invalidate the refresh token when you logout.
