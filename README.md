@@ -165,7 +165,7 @@ Create file `requests.rest` in your project by running this in terminal:
 touch requests.rest
 ```
 With following content:
-```http
+```
 #######################################
 GET http://localhost:3000/posts
 ```
@@ -224,7 +224,7 @@ You need to add some authentication and authorization to the server to do that.
 # 08 - Test the POST `/login` Endpoint
 
 Add the <kbd>POST</kbd>`/login` request to the `requests.rest`:
-```http
+```
 #######################################
 POST http://localhost:3000/login
 Content-Type: application/json
@@ -287,7 +287,7 @@ You should see **_Unauthorized_** in the response.
 ![Response](images/10-01.png)
 
 Now add an _Authorization_ header to the request in the line below the <kbd>GET</kbd>`/posts` request with a wrong token:
-```http
+```
 #######################################
 GET http://localhost:3000/posts
 Authorization: Bearer thisTokenIsObviouslyWrong
@@ -298,7 +298,7 @@ You'll get **_Forbidden_** status in the response.
 ![Response](images/10-02.png)
 
 Get the correct token by sending <kbd>POST</kbd>`/login` request, copy it and add it to the header:
-```http
+```
 #######################################
 GET http://localhost:3000/posts
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSmFuZSIsImlhdCI6MTYzMzUyNjYwMX0.VD8o8dGKben_XdDxKt4oEmkMzJeQrWhk8i4bqNVa2-Q
@@ -373,7 +373,7 @@ I prefer the split option, because I can see what's going on in both terminals s
 ![Split Terminal](images/12-01.png)
 
 Now that both servers are running, in `requests.rest` alter the <kbd>POST</kbd>`/login` request to use port 4000 (i.e. different server), copy the `accessToken` and paste it in the original <kbd>GET</kbd>`/posts` on the `port 3000`:
-```http
+```
 #######################################
 GET http://localhost:3000/posts
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSmFuZSIsImlhdCI6MTYzMzYyNTE4NH0.bXl9QVdcclzhvYIoFAKL44ErafUiRlwN0RDQ2bkWhEI
@@ -500,7 +500,8 @@ You will get a response containing access AND refresh token:
 
 # 16 - Getting a New Access Token Based on a Refresh Token
 
-Let's adjust the existing `verifyToken` function to work with the _refresh tokens_. It will be similar to the `verifyToken` function that is used in <kbd>GET</kbd>`/posts` endpoint in `apiServer.js` with 2 small differences:
+Let's adjust the existing `verifyToken` function to work with the _refresh tokens_.
+It will be similar to the `verifyToken` function that is used in <kbd>GET</kbd>`/posts` endpoint in `apiServer.js` with 2 small differences:
 * if the `Authorization` header contains seemingly valid token it will next check refresh token "storage" that you created in the previous chapter for an existence of the incoming refresh token to confirm that such token was indeed issued previously and return **_403 Forbidden_** if it wasn't
   ```javascript
       if (!refreshTokens.includes(token)) return res.sendStatus(403)
@@ -523,7 +524,7 @@ Now, when user's _access token_ expires, he's able to request a new one by calli
 All this without being required to login again.
 
 Add the new request to `requests.rest` to try it out:
-```html
+```
 #######################################
 GET http://localhost:4000/accessToken
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSmFuZSIsImlhdCI6MTYzNDUwOTUxNX0.pM4SAXRNy4QcCdFgmtr5xmSKazkF-V-RXEJKT2nu5us
@@ -545,7 +546,7 @@ app.delete("/logout", (req, res) => {
 ```
 
 To test the endpoint, create a new request in `requests.rest`:
-```html
+```
 #######################################
 DELETE http://localhost:4000/logout
 Content-Type: application/json
@@ -569,7 +570,7 @@ Well yes, it will still work but that's why you set a short expiration in it.
 >It is said that using JWT should be stateless, meaning that you should store everything you need in the payload and skip performing a DB query on every request.
 >But if you plan to have a strict log out functionality, that cannot wait for the token auto-expiration, even though you have cleaned the token from the client side, then you might need to neglect the stateless logic and do some queries.
 >
->An implementation would probably be to store a so-called "blacklist" of all the tokens that are valid no more and have not expired yet.
+>An implementation would probably be to store a so-called "blacklist" of all the tokens that should be valid no more but have not expired yet.
 >You can use a DB that has TTL option on documents which would be set to the amount of time left until the token is expired.
 >**Redis** is a good option for this, that will allow fast in memory access to the list.
 >Then, in a middleware that runs on every authorized request, you should check if provided token is in The Blacklist.
