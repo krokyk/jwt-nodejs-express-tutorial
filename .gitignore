@@ -1,8 +1,8 @@
-# Dependency directories
 node_modules/
 
-#.env
-#apiServer.js
-#package-lock.json
-#package.json
-#!/chapter-src/**/.env
+/.env
+/apiServer.js
+/authServer.js
+/package-lock.json
+/package.json
+/requests.rest
