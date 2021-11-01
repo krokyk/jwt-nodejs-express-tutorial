@@ -215,11 +215,13 @@ You need to add some authentication and authorization to the server to do that.
   ```bash
   node -p "require('crypto').randomBytes(64).toString('hex')" # -p prints out the evaluated input
   ```
-  Each time you run that a new random string is generated.XXX
+  Each time you run that, a new random string is generated.
   Create `ACCESS_TOKEN_SECRET` environment variable in the `.env` file with that value, e.g.:
   ```properties
   ACCESS_TOKEN_SECRET=9fef66c25daba5b9a28a59f82e4bd799c83d891f4dae047c27c60796c0b5a9732cf66b87c21836f8df1ef8580de72b4c5d1197a6e811063d3b1ed03ed4fb8bb7
   ```
+  >**:exclamation: IMPORTANT:** Don't forget to restart the server so that the new environment variable is available to the server process.
+  >You can do so by typing `rs` in the terminal where `nodemon` is running, or simply by exiting and starting the server again.
 
 # 08 - Test the POST `/login` Endpoint
 
@@ -500,7 +502,7 @@ You will get a response containing access AND refresh token:
 
 # 16 - Getting a New Access Token Based on a Refresh Token
 
-Let's adjust the existing `verifyToken` function to work with the _refresh tokens_.
+Let's adjust the existing `verifyToken` function in `authServer.js` to work with the _refresh tokens_.
 It will be similar to the `verifyToken` function that is used in <kbd>GET</kbd>`/posts` endpoint in `apiServer.js` with 2 small differences:
 * if the `Authorization` header contains seemingly valid token it will next check refresh token "storage" that you created in the previous chapter for an existence of the incoming refresh token to confirm that such token was indeed issued previously and return **_403 Forbidden_** if it wasn't
   ```javascript
